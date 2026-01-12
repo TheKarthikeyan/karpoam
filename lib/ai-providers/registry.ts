@@ -1,19 +1,22 @@
 import { createGeminiAdapter } from './gemini-adapter';
 import { createGrokAdapter } from './grok-adapter';
+import { createOpenAIAdapter } from './openai-adapter';
 import type { ProviderAdapter, ProviderGenerateParams, ProviderGenerateResult } from './types';
 
-type ProviderKey = 'grok' | 'gemini';
+type ProviderKey = 'grok' | 'gemini' | 'openai';
 
 type ProviderFactory = () => ProviderAdapter;
 
 const providerFactories: Record<ProviderKey, ProviderFactory> = {
   grok: createGrokAdapter,
   gemini: createGeminiAdapter,
+  openai: createOpenAIAdapter,
 };
 
 const providerEnvGuards: Record<ProviderKey, () => string | undefined> = {
   grok: () => process.env.XAI_API_KEY,
   gemini: () => process.env.GEMINI_API_KEY,
+  openai: () => process.env.OPENAI_API_KEY,
 };
 
 const providerCache: Partial<Record<ProviderKey, ProviderAdapter>> = {};
@@ -28,6 +31,9 @@ function resolveProviderKey(preferred?: string): ProviderKey {
     return envPreference as ProviderKey;
   }
 
+  if (providerEnvGuards.openai()) {
+    return 'openai';
+  }
   if (providerEnvGuards.grok()) {
     return 'grok';
   }

@@ -25,8 +25,9 @@ async function handler(request: NextRequest) {
   return response;
 }
 
-// Only authenticated users need CSRF tokens
+// KARPOAM: Allow unauthenticated access when DISABLE_RATE_LIMITS=true
+// CSRF tokens are less critical without auth but frontend may still request them
 export const GET = withSecurity(handler, {
-  requireAuth: true,
+  requireAuth: process.env.DISABLE_RATE_LIMITS !== 'true',
   allowedMethods: ['GET']
 });

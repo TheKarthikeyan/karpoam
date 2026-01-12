@@ -1,10 +1,13 @@
-type ClientProviderKey = 'grok' | 'gemini';
+type ClientProviderKey = 'grok' | 'gemini' | 'openai';
 
 function resolveClientProviderKey(): ClientProviderKey {
   const rawProvider = process.env.NEXT_PUBLIC_AI_PROVIDER;
   const normalized =
     typeof rawProvider === 'string' ? rawProvider.trim().toLowerCase() : undefined;
 
+  if (normalized === 'openai') {
+    return 'openai';
+  }
   if (normalized === 'gemini') {
     return 'gemini';
   }

@@ -28,6 +28,32 @@ import { getGuestAccessState, setGuestCookies } from '@/lib/guest-usage';
  */
 async function handler(_request: NextRequest) {
   try {
+    // KARPOAM: Disable rate limits for personal use
+    const DISABLE_RATE_LIMITS = process.env.DISABLE_RATE_LIMITS === 'true';
+    if (DISABLE_RATE_LIMITS) {
+      return NextResponse.json({
+        canGenerate: true,
+        isAuthenticated: false,
+        tier: 'unlimited',
+        status: null,
+        reason: null,
+        warning: null,
+        unlimited: true,
+        requiresAuth: false,
+        resetAt: null,
+        requiresTopup: false,
+        willConsumeTopup: false,
+        usage: {
+          counted: null,
+          cached: null,
+          baseLimit: null,
+          baseRemaining: null,
+          topupRemaining: null,
+          totalRemaining: null,
+        },
+      });
+    }
+
     const supabase = await createClient();
 
     // Check if user is authenticated

@@ -114,7 +114,9 @@ async function handler(req: NextRequest) {
     } = await supabase.auth.getUser();
 
     const guestState = user ? null : await getGuestAccessState({ supabase });
-    const unlimitedAccess = hasUnlimitedVideoAllowance(user);
+    // KARPOAM: Disable rate limits for personal use
+    const DISABLE_RATE_LIMITS = process.env.DISABLE_RATE_LIMITS === 'true';
+    const unlimitedAccess = DISABLE_RATE_LIMITS || hasUnlimitedVideoAllowance(user);
 
     let cachedVideo: any = null;
     if (!forceRegenerate) {
@@ -134,7 +136,7 @@ async function handler(req: NextRequest) {
 
     if (theme) {
       // Guests only get one fresh analysis; allow themed queries for cached videos
-      if (!user && guestState?.used && !isCachedAnalysis) {
+      if (!DISABLE_RATE_LIMITS && !user && guestState?.used && !isCachedAnalysis) {
         const response = respondWithNoCredits(
           {
             error: 'Sign in to analyze videos',
@@ -204,7 +206,7 @@ async function handler(req: NextRequest) {
     }
 
     if (!user) {
-      if (guestState?.used && !isCachedAnalysis) {
+      if (!DISABLE_RATE_LIMITS && guestState?.used && !isCachedAnalysis) {
         const response = respondWithNoCredits(
           {
             error: 'Sign in to analyze videos',
@@ -432,11 +434,11 @@ async function handler(req: NextRequest) {
 
     // Save analysis to database (server-side) - prevents client-side cache poisoning
     try {
-      await supabase.rpc('insert_video_analysis_server', {
+      const { data: saveResult, error: saveError } = await supabase.rpc('insert_video_analysis_server', {
         p_youtube_id: videoId,
         p_title: videoInfo?.title || `YouTube Video ${videoId}`,
         p_author: videoInfo?.author || null,
-        p_duration: videoInfo?.duration || null,
+        p_duration: videoInfo?.duration || 0,  // Default to 0 if duration is null
         p_thumbnail_url: videoInfo?.thumbnail || null,
         p_transcript: transcript,
         p_topics: topics,
@@ -447,9 +449,21 @@ async function handler(req: NextRequest) {
         p_language: videoInfo?.language || null,
         p_available_languages: videoInfo?.availableLanguages || null
       });
+      
+      if (saveError) {
+        console.error('[CACHE SAVE ERROR]', {
+          error: saveError,
+          videoId,
+          code: saveError.code,
+          message: saveError.message,
+          details: saveError.details
+        });
+      } else {
+        console.log('[CACHE SAVE SUCCESS]', { videoId, resultId: saveResult });
+      }
     } catch (saveError) {
       // Log but don't fail the request - user should still see their results
-      console.error('Failed to save video analysis to cache:', saveError);
+      console.error('[CACHE SAVE EXCEPTION]', saveError);
     }
 
     const response = NextResponse.json({
