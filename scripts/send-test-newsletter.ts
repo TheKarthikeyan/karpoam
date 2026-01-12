@@ -7,7 +7,7 @@ dotenv.config({ path: '.env.local' });
 
 // Check for required environment variables
 const POSTMARK_SERVER_TOKEN = process.env.POSTMARK_SERVER_TOKEN;
-const NEXT_PUBLIC_APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://longcut.ai';
+const NEXT_PUBLIC_APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://karpoam.com';
 
 if (!POSTMARK_SERVER_TOKEN) {
   console.error('Error: POSTMARK_SERVER_TOKEN is not set.');
@@ -28,7 +28,7 @@ async function sendTestNewsletter() {
 
   try {
     const result = await client.sendEmail({
-      "From": "zara@longcut.ai",
+      "From": "support@karpoam.com",
       "To": testEmail,
       "Subject": subject,
       "HtmlBody": htmlBody,

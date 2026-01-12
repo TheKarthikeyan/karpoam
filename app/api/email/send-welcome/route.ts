@@ -96,7 +96,7 @@ export async function POST(req: NextRequest) {
     const client = new postmark.ServerClient(postmarkToken);
 
     const result = await client.sendEmail({
-      From: 'zara@longcut.ai',
+      From: 'support@karpoam.com',
       To: email,
       Subject: getWelcomeSubject(),
       HtmlBody: getWelcomeHtmlBody(fullName),

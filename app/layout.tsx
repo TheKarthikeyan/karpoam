@@ -20,8 +20,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "LongCut - The best way to learn from long videos",
-  description: "Smart video navigation that transforms long YouTube videos into topic-driven learning experiences",
+  title: "Karpoam - கற்போம் - Let's Learn",
+  description: "Personal AI learning tool that transforms YouTube videos into structured learning experiences",
   icons: {
     icon: "/Video_Play.svg",
   },
@@ -47,7 +47,7 @@ export default function RootLayout({
                 >
                   <Image
                     src="/Video_Play.svg"
-                    alt="LongCut logo"
+                    alt="Karpoam logo"
                     width={28}
                     height={28}
                     className="h-7 w-7"

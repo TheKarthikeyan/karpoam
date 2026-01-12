@@ -34,7 +34,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }
 
       return {
-        url: `https://longcut.ai/v/${slug}`,
+        url: `https://karpoam.com/v/${slug}`,
         lastModified: new Date(video.updated_at),
         changeFrequency: 'monthly' as const,
         priority: 0.8
@@ -45,19 +45,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
     {
-      url: 'https://longcut.ai',
+      url: 'https://karpoam.com',
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 1.0
     },
     {
-      url: 'https://longcut.ai/pricing',
+      url: 'https://karpoam.com/pricing',
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.9
     },
     {
-      url: 'https://longcut.ai/library',
+      url: 'https://karpoam.com/library',
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.7

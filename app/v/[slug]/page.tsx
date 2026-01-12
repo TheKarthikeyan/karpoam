@@ -86,7 +86,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!resolved) {
     return {
-      title: 'Video Not Found - LongCut',
+      title: 'Video Not Found - Karpoam',
       description: 'This video analysis could not be found.'
     };
   }
@@ -106,7 +106,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const thumbnailUrl = video.thumbnail_url || `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
 
   return {
-    title: `${video.title} - Transcript & Analysis | LongCut`,
+    title: `${video.title} - Transcript & Analysis | Karpoam`,
     description,
     keywords: [
       video.title,
@@ -122,8 +122,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: video.title,
       description: description,
       type: 'video.other',
-      url: `https://longcut.ai/v/${slugForMeta}`,
-      siteName: 'LongCut',
+      url: `https://karpoam.com/v/${slugForMeta}`,
+      siteName: 'Karpoam',
       images: [
         {
           url: thumbnailUrl,
@@ -145,7 +145,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       images: [thumbnailUrl]
     },
     alternates: {
-      canonical: `https://longcut.ai/v/${slugForMeta}`
+      canonical: `https://karpoam.com/v/${slugForMeta}`
     },
     robots: {
       index: true,
@@ -240,8 +240,8 @@ export default async function VideoPage({ params }: PageProps) {
     },
     "publisher": {
       "@type": "Organization",
-      "name": "LongCut",
-      "url": "https://longcut.ai"
+      "name": "Karpoam",
+      "url": "https://karpoam.com"
     },
     "author": {
       "@type": "Person",
@@ -264,12 +264,12 @@ export default async function VideoPage({ params }: PageProps) {
     },
     "publisher": {
       "@type": "Organization",
-      "name": "LongCut",
-      "url": "https://longcut.ai"
+      "name": "Karpoam",
+      "url": "https://karpoam.com"
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://longcut.ai/v/${canonicalSlug || slug}`
+      "@id": `https://karpoam.com/v/${canonicalSlug || slug}`
     },
     "articleBody": fullTranscriptText
   };

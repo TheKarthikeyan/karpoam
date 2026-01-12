@@ -36,7 +36,7 @@ export default function robots(): MetadataRoute.Robots {
         ]
       }
     ],
-    sitemap: 'https://longcut.ai/sitemap.xml',
-    host: 'https://longcut.ai'
+    sitemap: 'https://karpoam.com/sitemap.xml',
+    host: 'https://karpoam.com'
   };
 }
